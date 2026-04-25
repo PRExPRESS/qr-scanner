@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { PermissionRequest } from './PermissionRequest';
 import { useScanner } from '@/hooks/useScanner';
 import { useSocketConnection } from '@/hooks/useSocketConnection';
@@ -15,6 +15,12 @@ export function ScannerApp() {
 
   const socket = useSocketConnection();
 
+  const handleScan = useCallback(
+  (data: string) => socket.emit('scan_data', data),
+  [socket.emit]
+);
+// ...
+
   const {
     videoRef,
     hasPermission,
@@ -29,7 +35,7 @@ export function ScannerApp() {
     clearResult,
     scanFromImage,
   } = useScanner({
-    onScan: (data) => socket.emit('scan_data', data),
+    onScan: handleScan,
   });
 
   if (hasPermission === null || hasPermission === false) {

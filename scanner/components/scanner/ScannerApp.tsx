@@ -54,6 +54,7 @@ export function ScannerApp() {
           socket.disconnect();
           setShowConnectionPanel(false);
         }}
+        setShowConnectionPanel={setShowConnectionPanel}
       />
     );
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wifi, WifiOff, Loader2, Link2, ShieldAlert } from 'lucide-react';
+import { Wifi, WifiOff, Loader2, Link2, ShieldAlert, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ConnectionStatus } from '@/hooks/useSocketConnection';
@@ -11,6 +11,7 @@ interface ConnectionSetupProps {
   error: string | null;
   onConnect: (url: string) => void;
   onDisconnect: () => void;
+  setShowConnectionPanel: (show: boolean) => void;
 }
 
 export function ConnectionSetup({
@@ -19,6 +20,7 @@ export function ConnectionSetup({
   error,
   onConnect,
   onDisconnect,
+  setShowConnectionPanel,
 }: ConnectionSetupProps) {
   const [inputUrl, setInputUrl] = useState(serverUrl ?? '');
 
@@ -26,11 +28,18 @@ export function ConnectionSetup({
     e.preventDefault();
     const trimmed = inputUrl.trim();
     if (trimmed) onConnect(trimmed);
-    window.history.back(); // Close the panel after connecting (or attempting to)
+    window.location.href = '/'; 
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-dvh bg-zinc-950 px-6 text-center">
+    <div className="relative flex flex-col items-center justify-center min-h-dvh bg-zinc-950 px-6 text-center">
+      <button
+        onClick={() => setShowConnectionPanel(false)}
+        className="absolute top-4 right-4 p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+        aria-label="Close"
+      >
+        <X className="w-5 h-5" />
+      </button>
       <div
         className={cn(
           'w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-colors duration-300',

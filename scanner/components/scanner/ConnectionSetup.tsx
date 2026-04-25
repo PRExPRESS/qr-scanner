@@ -26,6 +26,7 @@ export function ConnectionSetup({
     e.preventDefault();
     const trimmed = inputUrl.trim();
     if (trimmed) onConnect(trimmed);
+    window.history.back(); // Close the panel after connecting (or attempting to)
   };
 
   return (

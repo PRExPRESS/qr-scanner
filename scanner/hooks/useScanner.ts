@@ -43,13 +43,12 @@ export function useScanner(options: UseScannerOptions = {}) {
     // Wait up to 500ms for the video element to appear in the DOM
     // (it renders only after hasPermission becomes true)
     if (!videoRef.current) {
-      await new Promise<void>((resolve) => setTimeout(resolve, 100));
+      await new Promise<void>((resolve) => setTimeout(resolve, 1));
       if (!videoRef.current) return;
     }
     setScanError(null);
 
     const gen = ++generationRef.current;
-    console.log('[useScanner] startCamera called, gen=', gen, 'mode=', mode);
 
     try {
       const hints = new Map();
@@ -59,7 +58,6 @@ export function useScanner(options: UseScannerOptions = {}) {
 
       // Pick the best matching device for the requested facing mode
       const devices = await BrowserMultiFormatReader.listVideoInputDevices();
-      console.log('[useScanner] Video devices:', devices.map((d) => d.label));
       if (gen !== generationRef.current) return;
 
       if (devices.length === 0) {
@@ -72,8 +70,6 @@ export function useScanner(options: UseScannerOptions = {}) {
           ? (devices.find((d) => /back|rear|environment/i.test(d.label)) ?? devices[devices.length - 1])
           : (devices.find((d) => /front|user|face/i.test(d.label)) ?? devices[0]);
 
-      console.log('[useScanner] Using device:', preferred.label, preferred.deviceId);
-
       let frameCount = 0;
       const controls = await reader.decodeFromVideoDevice(
         preferred.deviceId,
@@ -82,12 +78,11 @@ export function useScanner(options: UseScannerOptions = {}) {
           if (gen !== generationRef.current) return;
           frameCount++;
           if (frameCount === 1 || frameCount % 60 === 0) {
-            console.log('[useScanner] Decode callback frame:', frameCount, 'hasResult:', !!result, 'error:', error?.name);
+            
           }
           if (result) {
             const data = result.getText();
             const format = BarcodeFormat[result.getBarcodeFormat()] ?? 'UNKNOWN';
-            console.log('[useScanner] Scan result:', { data, format });
             setLastResult({ data, format, timestamp: Date.now() });
             onScanRef.current?.(data);
             navigator.vibrate?.(200);
@@ -104,7 +99,6 @@ export function useScanner(options: UseScannerOptions = {}) {
       }
 
       controlsRef.current = controls;
-      console.log('[useScanner] Camera started, scanning active. gen=', gen);
       setIsScanning(true);
     } catch (err) {
       if (gen !== generationRef.current) return;

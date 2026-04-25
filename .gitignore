@@ -6,3 +6,5 @@
 /scanner/.env.local
 /scanner/.env.development
 /scanner/.env.production
+/driver/py/__pycache__
+/driver/py/venv

@@ -49,7 +49,6 @@ export function ScannerApp() {
         error={socket.error}
         onConnect={(url) => {
           socket.connect(url);
-          setShowConnectionPanel(false);
         }}
         onDisconnect={() => {
           socket.disconnect();

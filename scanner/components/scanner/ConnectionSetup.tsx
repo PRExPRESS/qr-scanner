@@ -28,7 +28,6 @@ export function ConnectionSetup({
     e.preventDefault();
     const trimmed = inputUrl.trim();
     if (trimmed) onConnect(trimmed);
-    window.location.href = '/'; 
   };
 
   return (

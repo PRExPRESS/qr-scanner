@@ -35,6 +35,7 @@ export function useSocketConnection(): SocketConnection {
       socketRef.current = null;
     }
 
+    localStorage.setItem('qr_server_url', url);
     setStatus('connecting');
     setServerUrl(url);
     setError(null);
@@ -81,7 +82,7 @@ export function useSocketConnection(): SocketConnection {
     if (typeof window === 'undefined') return;
 
     const params = new URLSearchParams(window.location.search);
-    const serverParam = params.get('server');
+    const serverParam = params.get('server') ?? localStorage.getItem('qr_server_url');
 
     // Defer so it runs after render, avoiding sync setState-in-effect warnings
     if (serverParam) {

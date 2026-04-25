@@ -1,0 +1,8 @@
+/driver/node_modules
+/driver/dist
+/driver/.env
+/scanner/node_modules
+/scanner/.next
+/scanner/.env.local
+/scanner/.env.development
+/scanner/.env.production

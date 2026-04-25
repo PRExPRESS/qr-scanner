@@ -1,0 +1,10 @@
+version: "3"
+# Run both tunnels with: ngrok start --all --config ngrok.yml
+# ngrok must already be authenticated: ngrok config add-authtoken YOUR_TOKEN
+tunnels:
+  scanner:
+    addr: 3000
+    proto: http
+  driver:
+    addr: 3001
+    proto: http
